@@ -3,6 +3,8 @@ CUDA_SDK_PATH = /af10/sc5nf/NVIDIA_CUDA_SDK
 OMP_NUM_THREADS = 1
 MIC_OMP_NUM_THREADS = 216
 
+frank: euler3d_cpu_double euler3d_cpu_double_rtcheck
+
 all: euler3d_cpu euler3d_cpu_double pre_euler3d_cpu pre_euler3d_cpu_double euler3d_cpu_offload
 
 #euler3d: euler3d.cu
@@ -19,6 +21,9 @@ euler3d_cpu_offload:
 
 euler3d_cpu_double: euler3d_cpu_double.cpp
 	g++ -O3 -Dblock_length=$(OMP_NUM_THREADS) -fopenmp euler3d_cpu_double.cpp -o euler3d_cpu_double
+
+euler3d_cpu_double_rtcheck: euler3d_cpu_double_rtcheck.cpp
+	g++ -O3 -Dblock_length=$(OMP_NUM_THREADS) -fopenmp euler3d_cpu_double_rtcheck.cpp -o euler3d_cpu_double_rtcheck
 
 #pre_euler3d: pre_euler3d.cu
 #	nvcc -Xptxas -v -O3 --gpu-architecture=compute_13 --gpu-code=compute_13 pre_euler3d.cu -o pre_euler3d -I$(CUDA_SDK_PATH)/common/inc  -L$(CUDA_SDK_PATH)/lib  -lcutil
@@ -39,6 +44,7 @@ clean:
 	rm -f euler3d_cpu_offload
 #	rm -f euler3d_double
 	rm -f euler3d_cpu_double
+	rm -f euler3d_cpu_double_rtcheck
 
 #	rm -f pre_euler3d
 	rm -f pre_euler3d_cpu
