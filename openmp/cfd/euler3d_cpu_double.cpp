@@ -53,7 +53,6 @@ void dealloc(T* array)
 template <typename T>
 void copy(T* dst, T* src, int N)
 {
-	#pragma omp parallel for default(shared) schedule(static)
 	for(int i = 0; i < N; i++)
 	{
 		dst[i] = src[i];
@@ -102,7 +101,6 @@ double3 ff_flux_contribution_density_energy;
 
 void initialize_variables(int nelr, double* variables)
 {
-	#pragma omp parallel for default(shared) schedule(static)
 	for(int i = 0; i < nelr; i++)
 	{
 		for(int j = 0; j < NVAR; j++) variables[i*NVAR + j] = ff_variable[j];
@@ -155,7 +153,6 @@ inline double compute_speed_of_sound(double& density, double& pressure)
 
 void compute_step_factor(int nelr, double* variables, double* areas, double* step_factors)
 {
-	#pragma omp parallel for default(shared) schedule(static)
 	for(int i = 0; i < nelr; i++)
 	{
 		double density = variables[NVAR*i + VAR_DENSITY];
@@ -186,7 +183,6 @@ void compute_flux(int nelr, int* elements_surrounding_elements, double* normals,
 {
 	const double smoothing_coefficient = double(0.2f);
 
-	#pragma omp parallel for default(shared) schedule(static)
 	for(int i = 0; i < nelr; i++)
 	{
 		int j, nb;
@@ -317,7 +313,6 @@ void compute_flux(int nelr, int* elements_surrounding_elements, double* normals,
 
 void time_step(int j, int nelr, double* old_variables, double* variables, double* step_factors, double* fluxes)
 {
-	#pragma omp parallel for  default(shared) schedule(static)
 	for(int i = 0; i < nelr; i++)
 	{
 		double factor = step_factors[i]/double(RK+1-j);
@@ -445,6 +440,7 @@ int main(int argc, char** argv)
 	}
 
 	double end = omp_get_wtime();
+	std::cout << " total time: " << (end-start) << std::endl;
 	std::cout  << (end-start)  / iterations << " seconds per iteration" << std::endl;
 
 	std::cout << "Saving solution..." << std::endl;

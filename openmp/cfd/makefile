@@ -1,6 +1,6 @@
 CUDA_SDK_PATH = /af10/sc5nf/NVIDIA_CUDA_SDK
 
-OMP_NUM_THREADS = 8
+OMP_NUM_THREADS = 1
 MIC_OMP_NUM_THREADS = 216
 
 all: euler3d_cpu euler3d_cpu_double pre_euler3d_cpu pre_euler3d_cpu_double euler3d_cpu_offload
