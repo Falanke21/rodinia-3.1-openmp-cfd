@@ -223,37 +223,30 @@ void compute_flux(int nelr, int* elements_surrounding_elements, double* normals,
 		double speed_sqd_nb, speed_of_sound_nb, pressure_nb;
 
 		// for(j = 0; j < NNB; j++)
-		int stride = 4;
+		int stride = 2;
 		int upper_bound = NNB / stride * stride;
 		j = 0;
 		for (; j < upper_bound; j += stride)
 		{
 			// nb = elements_surrounding_elements[i*NNB + j];
-			int vec_nb[4] = {elements_surrounding_elements[i*NNB + j], 
-							   elements_surrounding_elements[i*NNB + (j+1)],
-							   elements_surrounding_elements[i*NNB + (j+2)],
-							   elements_surrounding_elements[i*NNB + (j+3)]};
+			int vec_nb[2] = {elements_surrounding_elements[i*NNB + j], 
+							 elements_surrounding_elements[i*NNB + (j+1)]};
 			// normal.x = normals[(i*NNB + j)*NDIM + 0];
-			__m256d vec_normal_x = {normals[(i*NNB + j)*NDIM + 0],
-									normals[(i*NNB + (j+1))*NDIM + 0],
-									normals[(i*NNB + (j+2))*NDIM + 0],
-									normals[(i*NNB + (j+3))*NDIM + 0]};
+			vector double vec_normal_x = {normals[(i*NNB + j)*NDIM + 0],
+										  normals[(i*NNB + (j+1))*NDIM + 0]};
 			// normal.y = normals[(i*NNB + j)*NDIM + 1];
-			__m256d vec_normal_y = {normals[(i*NNB + j)*NDIM + 1],
-									normals[(i*NNB + (j+1))*NDIM + 1],
-									normals[(i*NNB + (j+2))*NDIM + 1],
-									normals[(i*NNB + (j+3))*NDIM + 1]};
+			vector double vec_normal_y = {normals[(i*NNB + j)*NDIM + 1],
+										  normals[(i*NNB + (j+1))*NDIM + 1]};
 			// normal.z = normals[(i*NNB + j)*NDIM + 2];
-			__m256d vec_normal_z = {normals[(i*NNB + j)*NDIM + 2],
-									normals[(i*NNB + (j+1))*NDIM + 2],
-									normals[(i*NNB + (j+2))*NDIM + 2],
-									normals[(i*NNB + (j+3))*NDIM + 2]};
+			vector double vec_normal_z = {normals[(i*NNB + j)*NDIM + 2],
+										  normals[(i*NNB + (j+1))*NDIM + 2]};
 			// normal_len = std::sqrt(normal.x*normal.x + normal.y*normal.y + normal.z*normal.z);
-			__m256d vec_normal_len = _mm256_sqrt_pd(vec_normal_x*vec_normal_x + 
-													vec_normal_y*vec_normal_y +
-													vec_normal_z*vec_normal_z);
+			vector double vec_normal_len = vec_sqrt(vec_add(
+														vec_add(vec_mul(vec_normal_x, vec_normal_x),
+																vec_mul(vec_normal_y, vec_normal_y)),
+														vec_mul(vec_normal_z, vec_normal_z)));
 
-			if(vec_nb[0] == -1 && vec_nb[1] == -1 && vec_nb[2] == -1 && vec_nb[3] == -1) // convergent case for nb == -1
+			if(vec_nb[0] == -1 && vec_nb[1] == -1) // convergent case for nb == -1
 			{
 				// flux_i_momentum.x += normal.x*pressure_i;
 				// flux_i_momentum.y += normal.y*pressure_i;
@@ -264,16 +257,10 @@ void compute_flux(int nelr, int* elements_surrounding_elements, double* normals,
 				flux_i_momentum.x += vec_normal_x[1]*pressure_i;
 				flux_i_momentum.y += vec_normal_y[1]*pressure_i;
 				flux_i_momentum.z += vec_normal_z[1]*pressure_i;
-				flux_i_momentum.x += vec_normal_x[2]*pressure_i;
-				flux_i_momentum.y += vec_normal_y[2]*pressure_i;
-				flux_i_momentum.z += vec_normal_z[2]*pressure_i;
-				flux_i_momentum.x += vec_normal_x[3]*pressure_i;
-				flux_i_momentum.y += vec_normal_y[3]*pressure_i;
-				flux_i_momentum.z += vec_normal_z[3]*pressure_i;
 			}
 			else  // divergent case
 			{
-				for (int rtcheck_i = 0; rtcheck_i < 4; rtcheck_i++) {
+				for (int rtcheck_i = 0; rtcheck_i < 2; rtcheck_i++) {
 					nb = vec_nb[rtcheck_i];
 					normal.x = vec_normal_x[rtcheck_i];
 					normal.y = vec_normal_y[rtcheck_i];
