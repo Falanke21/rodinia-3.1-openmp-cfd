@@ -25,6 +25,9 @@ euler3d_cpu_double: euler3d_cpu_double.cpp
 euler3d_cpu_double_rtcheck: euler3d_cpu_double_rtcheck.cpp
 	g++ -mavx2 -O3 -Dblock_length=$(OMP_NUM_THREADS) -fopenmp euler3d_cpu_double_rtcheck.cpp -o euler3d_cpu_double_rtcheck
 
+euler3d_cpu_double_power: euler3d_cpu_double_power.cpp
+	g++ -maltivec -O3 -Dblock_length=$(OMP_NUM_THREADS) -fopenmp euler3d_cpu_double_power.cpp -o euler3d_cpu_double_power
+
 #pre_euler3d: pre_euler3d.cu
 #	nvcc -Xptxas -v -O3 --gpu-architecture=compute_13 --gpu-code=compute_13 pre_euler3d.cu -o pre_euler3d -I$(CUDA_SDK_PATH)/common/inc  -L$(CUDA_SDK_PATH)/lib  -lcutil
 
