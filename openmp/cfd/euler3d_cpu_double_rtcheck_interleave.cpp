@@ -262,18 +262,21 @@ void compute_flux(int nelr, int* elements_surrounding_elements, double* normals,
 				// flux_i_momentum.x += normal.x*pressure_i;
 				// flux_i_momentum.y += normal.y*pressure_i;
 				// flux_i_momentum.z += normal.z*pressure_i;
-				flux_i_momentum.x += vec_normal_x[0]*pressure_i;
-				flux_i_momentum.y += vec_normal_y[0]*pressure_i;
-				flux_i_momentum.z += vec_normal_z[0]*pressure_i;
-				flux_i_momentum.x += vec_normal_x[1]*pressure_i;
-				flux_i_momentum.y += vec_normal_y[1]*pressure_i;
-				flux_i_momentum.z += vec_normal_z[1]*pressure_i;
-				flux_i_momentum.x += vec_normal_x[2]*pressure_i;
-				flux_i_momentum.y += vec_normal_y[2]*pressure_i;
-				flux_i_momentum.z += vec_normal_z[2]*pressure_i;
-				flux_i_momentum.x += vec_normal_x[3]*pressure_i;
-				flux_i_momentum.y += vec_normal_y[3]*pressure_i;
-				flux_i_momentum.z += vec_normal_z[3]*pressure_i;
+				vec_normal_x = vec_normal_x * pressure_i;
+				vec_normal_y = vec_normal_y * pressure_i;
+				vec_normal_z = vec_normal_z * pressure_i;
+				flux_i_momentum.x += vec_normal_x[0];
+				flux_i_momentum.x += vec_normal_x[1];
+				flux_i_momentum.x += vec_normal_x[2];
+				flux_i_momentum.x += vec_normal_x[3];
+				flux_i_momentum.y += vec_normal_y[0];
+				flux_i_momentum.y += vec_normal_y[1];
+				flux_i_momentum.y += vec_normal_y[2];
+				flux_i_momentum.y += vec_normal_y[3];
+				flux_i_momentum.z += vec_normal_z[0];
+				flux_i_momentum.z += vec_normal_z[1];
+				flux_i_momentum.z += vec_normal_z[2];
+				flux_i_momentum.z += vec_normal_z[3];
 			}
 			else  // divergent case
 			{

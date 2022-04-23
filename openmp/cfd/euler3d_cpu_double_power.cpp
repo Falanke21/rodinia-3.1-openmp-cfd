@@ -251,6 +251,7 @@ void compute_flux(int nelr, int* elements_surrounding_elements, double* normals,
 				// flux_i_momentum.x += normal.x*pressure_i;
 				// flux_i_momentum.y += normal.y*pressure_i;
 				// flux_i_momentum.z += normal.z*pressure_i;
+				// TODO change this to vec_mul
 				flux_i_momentum.x += vec_normal_x[0]*pressure_i;
 				flux_i_momentum.y += vec_normal_y[0]*pressure_i;
 				flux_i_momentum.z += vec_normal_z[0]*pressure_i;
