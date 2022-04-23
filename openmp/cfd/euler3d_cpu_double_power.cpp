@@ -67,14 +67,14 @@ void dump(double* variables, int nel, int nelr)
 
 
 	{
-		std::ofstream file("density_rtcheck");
+		std::ofstream file("density_power");
 		file << nel << " " << nelr << std::endl;
 		for(int i = 0; i < nel; i++) file << variables[i*NVAR + VAR_DENSITY] << std::endl;
 	}
 
 
 	{
-		std::ofstream file("momentum_rtcheck");
+		std::ofstream file("momentum_power");
 		file << nel << " " << nelr << std::endl;
 		for(int i = 0; i < nel; i++)
 		{
@@ -84,7 +84,7 @@ void dump(double* variables, int nel, int nelr)
 	}
 
 	{
-		std::ofstream file("density_energy_rtcheck");
+		std::ofstream file("density_energy_power");
 		file << nel << " " << nelr << std::endl;
 		for(int i = 0; i < nel; i++) file << variables[i*NVAR + VAR_DENSITY_ENERGY] << std::endl;
 	}
