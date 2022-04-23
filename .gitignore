@@ -3,3 +3,4 @@ density_energy*
 momentum*
 euler3d_cpu_double
 euler3d_cpu_double_rtcheck
+euler3d_cpu_double_rtcheck_interleave

@@ -3,7 +3,7 @@ CUDA_SDK_PATH = /af10/sc5nf/NVIDIA_CUDA_SDK
 OMP_NUM_THREADS = 1
 MIC_OMP_NUM_THREADS = 216
 
-frank: euler3d_cpu_double euler3d_cpu_double_rtcheck
+frank: euler3d_cpu_double euler3d_cpu_double_rtcheck euler3d_cpu_double_rtcheck_interleave
 
 all: euler3d_cpu euler3d_cpu_double pre_euler3d_cpu pre_euler3d_cpu_double euler3d_cpu_offload
 
@@ -24,6 +24,9 @@ euler3d_cpu_double: euler3d_cpu_double.cpp
 
 euler3d_cpu_double_rtcheck: euler3d_cpu_double_rtcheck.cpp
 	g++ -mavx2 -O3 -Dblock_length=$(OMP_NUM_THREADS) -fopenmp euler3d_cpu_double_rtcheck.cpp -o euler3d_cpu_double_rtcheck
+
+euler3d_cpu_double_rtcheck_interleave: euler3d_cpu_double_rtcheck_interleave.cpp
+	g++ -mavx2 -O3 -Dblock_length=$(OMP_NUM_THREADS) -fopenmp euler3d_cpu_double_rtcheck_interleave.cpp -o euler3d_cpu_double_rtcheck_interleave
 
 euler3d_cpu_double_power: euler3d_cpu_double_power.cpp
 	g++ -maltivec -O3 -Dblock_length=$(OMP_NUM_THREADS) -fopenmp euler3d_cpu_double_power.cpp -o euler3d_cpu_double_power

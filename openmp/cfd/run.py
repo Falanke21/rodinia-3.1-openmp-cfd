@@ -18,7 +18,7 @@ if __name__ == "__main__":
     print("Running vector")
     for i in range(count):
         result = subprocess.run(
-            ["./euler3d_cpu_double_rtcheck", "../../data/cfd/fvcorr.domn.193K"], stdout=subprocess.PIPE)
+            ["./euler3d_cpu_double_rtcheck_interleave", "../../data/cfd/fvcorr.domn.193K"], stdout=subprocess.PIPE)
         splited_lst = result.stdout.decode("utf-8").split()
         find_index = splited_lst.index("time:")
         vector_times.append(float(splited_lst[find_index + 1]))
